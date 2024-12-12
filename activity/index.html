@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Conditioner Control</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background: radial-gradient(circle, rgba(36,37,42,1) 60%, rgba(17,17,19,1) 100%);
+        }
+
+        /* Styling for half-circle slider */
+        .half-circle {
+            position: relative;
+            width: 200px;
+            height: 100px;
+            background: transparent;
+            border-top-left-radius: 100px;
+            border-top-right-radius: 100px;
+            overflow: hidden;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            position: absolute;
+            width: 200px;
+            height: 100px;
+            transform: rotate(-90deg);
+            background: transparent;
+            pointer-events: none;
+        }
+
+        input[type="range"]::-webkit-slider-runnable-track {
+            width: 200px;
+            height: 8px;
+            background: #4f46e5;
+            border-radius: 5px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border: 3px solid #4f46e5;
+            border-radius: 50%;
+            pointer-events: auto;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen text-white font-sans">
+
+    <!-- Air Conditioner Control Panel -->
+    <div class="bg-gray-800 bg-opacity-90 p-4 rounded-2xl shadow-xl w-[300px]">
+        <!-- Title -->
+        <div class="text-center mb-4">
+            <h1 class="text-xl font-bold">Air Conditioner</h1>
+            <p class="text-gray-400 text-xs">Living Room</p>
+        </div>
+
+        <!-- Power Indicator -->
+        <div class="flex justify-between items-center mb-4">
+            <div class="flex items-center space-x-2">
+                <span id="powerIndicator" class="bg-green-500 w-3 h-3 rounded-full"></span>
+                <span class="text-gray-300 text-xs" id="powerStatus">Power On</span>
+            </div>
+            <button id="powerBtn" class="text-gray-400 text-lg">
+                <i class="fas fa-power-off"></i>
+            </button>
+        </div>
+
+        <!-- Temperature Control -->
+        <div class="flex flex-col items-center">
+            <!-- Temperature Display -->
+            <div id="currentTemp" class="text-4xl font-bold mb-3">21°C</div>
+
+            <!-- Half-circle Slider -->
+            <div class="half-circle bg-gray-600">
+                <input type="range" id="tempRange" min="15" max="32" value="21" step="1"
+                    onchange="updateTemperature()">
+            </div>
+        </div>
+
+        <!-- Control Icons -->
+        <div class="flex justify-between mt-6 text-xl">
+            <!-- Fan Speed -->
+            <button class="flex-1 text-center text-blue-500 hover:text-blue-300">
+                <i class="fas fa-fan"></i>
+            </button>
+            <!-- Timer -->
+            <button class="flex-1 text-center text-yellow-500 hover:text-yellow-300">
+                <i class="fas fa-clock"></i>
+            </button>
+            <!-- Mode -->
+            <button class="flex-1 text-center text-red-500 hover:text-red-300">
+                <i class="fas fa-adjust"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Get elements
+        const tempRange = document.getElementById('tempRange');
+        const currentTemp = document.getElementById('currentTemp');
+        const powerBtn = document.getElementById('powerBtn');
+        const powerIndicator = document.getElementById('powerIndicator');
+        const powerStatus = document.getElementById('powerStatus');
+
+        // Function to update the temperature display
+        function updateTemperature() {
+            const temperature = tempRange.value;
+            currentTemp.textContent = `${temperature}°C`;
+        }
+
+        // Power button toggle functionality
+        let isPowerOn = true;
+        powerBtn.addEventListener('click', () => {
+            if (isPowerOn) {
+                powerIndicator.classList.remove('bg-green-500');
+                powerIndicator.classList.add('bg-gray-500');
+                powerStatus.textContent = 'Power Off';
+                powerBtn.innerHTML = '<i class="fas fa-power-off text-red-500"></i>';
+            } else {
+                powerIndicator.classList.remove('bg-gray-500');
+                powerIndicator.classList.add('bg-green-500');
+                powerStatus.textContent = 'Power On';
+                powerBtn.innerHTML = '<i class="fas fa-power-off text-gray-400"></i>';
+            }
+            isPowerOn = !isPowerOn;
+        });
+    </script>
+</body>
+</html>
